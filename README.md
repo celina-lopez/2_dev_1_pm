@@ -26,3 +26,8 @@ PM talks to human after human played it
 other stuff:
 
 PM can make a task list for the engineers
+
+NOTES:
+
+they will seperate thinks with '''html, css, javascript etc
+build javascript first

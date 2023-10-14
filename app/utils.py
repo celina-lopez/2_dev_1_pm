@@ -3,36 +3,31 @@ import time
 from datetime import datetime
 from bs4 import BeautifulSoup
 import re
+import os
 
 
-def save_files(messages):
+def save_files(javascript_code, html_code):
     time_stamp = time.time()
     file_name = datetime.fromtimestamp(
-        time_stamp).strftime('sample_%Y-%m-%d%H:%M:%S')
-    write_messages(file_name, messages)
-    # write_html(file_name, messages[-1]["content"])
-    write_text(file_name, messages[-1]["content"])
+        time_stamp).strftime('%Y%m%d%H%M%S')
+    path = '../examples/games/{}'.format(file_name)
+    os.mkdir(path)
+    write_to_directory(path, javascript_code, 'script.js')
+    write_to_directory(path, html_code, 'home.html')
 
 
-def write_messages(file_name, messages):
-    with open("../examples/jsons/{}.json".format(file_name), 'w') as outfile:
-        json.dump(messages, outfile)
-
-
-def write_text(file_name, content):
-    with open("../examples/texts/{}.txt".format(file_name), "w") as output_file:
+def write_to_directory(path, content, name):
+    with open("{}/{}".format(path, name), "w") as output_file:
         output_file.write(content)
 
 
-def write_html(file_name, content):
-    soup = BeautifulSoup(content, "html.parser")
-    html = soup.find("html")
-    with open("../examples/htmls/{}.html".format(file_name), "w") as output_file:
-        output_file.write(html.prettify())
-
-
-def write_javascript(file_name, content):
+def parse_javascript(content):
     pattern = r'```javascript(.*?)```'
     javascript_code = re.findall(pattern, content, re.DOTALL)[0]
-    with open("../examples/javascripts/{}.js".format(file_name), "w") as js_file:
-        js_file.write(javascript_code)
+    return javascript_code
+
+
+def parse_html(content):
+    soup = BeautifulSoup(content, "html.parser")
+    html = soup.find("html")
+    return html.prettify()
