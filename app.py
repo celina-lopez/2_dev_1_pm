@@ -1,4 +1,4 @@
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, send_from_directory, render_template, redirect, url_for
 from app.main import startup_company, feed_back
 
 appz = Flask(__name__)
@@ -10,7 +10,9 @@ def create():
         ask = request.get_json()['ask']
         sha = startup_company(ask)
 
-        return {'sha': sha}
+        return redirect(url_for('update', sha_id=sha))
+    elif request.method == 'GET':
+        return render_template('home.html')
 
 
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
