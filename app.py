@@ -8,7 +8,7 @@ appz = Flask(__name__)
 @appz.route('/', methods=['POST', 'GET'])
 def create():
     if request.method == 'POST':
-        data = request.form
+        data = request.get_json()
 
         sha = startup_company(data['ask'], project_name=data['project_name'])
 
