@@ -8,7 +8,7 @@ appz = Flask(__name__)
 @appz.route('/', methods=['POST', 'GET'])
 def create():
     if request.method == 'POST':
-        ask = request.get_json()['ask']
+        ask = request.form['ask']
         sha = startup_company(ask)
 
         return redirect(url_for('update', sha_id=sha))
@@ -26,7 +26,7 @@ def create():
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
 def update(sha_id):
     if request.method == 'POST':
-        data = request.form
+        data = request.form['feedback']
         sha = feed_back(data['feedback'], sha_id)
         return {'sha': sha}
     elif request.method == 'GET':
