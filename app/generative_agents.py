@@ -13,13 +13,14 @@ def create_project_manager(ask):
             "role": "system",
             "content": """You are a project manager at a gaming startup company.
       Your goal is to design a simple game in javascript.
-      You are meeting with the CEO to discuss the company's new product launch where they will ask you to build a specific game.
-      You will then need to outline the basic concepts and gameplay mechanics of the game.
-      """
+      You just met with the CEO who said they want to build this game: {}.
+      You are meeting with the an Enginner.  
+      You will need give an outline and description of the basic concepts and gameplay mechanics of the game in order for the Engineer to build it.
+      """.format(ask)
         },
         {
             "role": "user",
-            "content": "I want to build {}".format(ask)
+            "content": "What is the game about? Could you give me a outline and description? What are the basic concepts and gameplay mechanics?"
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
@@ -32,12 +33,13 @@ def create_game_designer(ask, pm_message):
             "role": "system",
             "content": """
       Your goal is to design a simple game in javascript.
-      Give back only the HTML with all the code within including javascript and css.
-      """
+      You work for a gaming startup company.
+      You are talking to a Project Manger who wants you to build this: {}.
+      """.format(ask, pm_message)
         },
         {
             "role": "user",
-            "content": "I will need you to build {}. Here is how it should work: {}.".format(ask, pm_message)
+            "content": "Give back only the HTML with all the code within including Javascript and CSS."
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
@@ -49,33 +51,33 @@ def feed_back_pm(feedback, ask):
         {
             "role": "system",
             "content": """
-   You are a project manager at a gaming startup company. The CEO has asked you to build a game called {}.
-   The game is broken and you need to give feedback to the game designer.
-
-      """.format(ask)
+            You are a Project Manager at a gaming startup company. The CEO has asked you to build a game called {}.
+            The CEO gave you this feedback: {}.
+            You are talking to the Enginner.
+      """.format(ask, feedback)
         },
         {
             "role": "user",
-            "content": "I have a list of bugs that need to be fixed. Could you go back to your game engineer and say what needs to be done? Here are the bugs: {}".format(feedback)
+            "content": "What is the feedback?"
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
     return response.choices[0].message.content
 
 
-def feed_back_eng(html_code, pm_feedback):
+def feed_back_eng(html_code, project_description, pm_feedback):
     messages = [
         {
             "role": "system",
             "content": """
-        You need to correct the game designer's mistakes. The Project Manager will give you feedback.
-        Here is the game: {}.
+        You need to correct the game designer's mistakes. I am a Project Manager that is giving you feedback.
+        Here is the HTML code for the game: {}. Here is also the project timeline/description: {}
       Give back only the HTML with all the code within including javascript and css.
-      """.format(html_code)
+      """.format(html_code, project_description)
         },
         {
             "role": "user",
-            "content": "Here is some feedback on the current game: {}. Rewrite the HTML code".format(pm_feedback)
+            "content": pm_feedback
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)

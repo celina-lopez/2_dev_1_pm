@@ -44,7 +44,8 @@ def feed_back(feedback, sha):
         html_code = outfile.read()
     feedback_message = feed_back_pm(
         "\n".join(feedback), ask)  # feed back is a list
-    feedback_html_code = feed_back_eng(feedback_message, html_code)
+    feedback_html_code = feed_back_eng(
+        feedback_message, history[0]['pm_message'], html_code)
     new_html_code = parse_html(feedback_html_code)
     new_history = {
         'ask': ask,
@@ -57,8 +58,7 @@ def feed_back(feedback, sha):
     print(feedback_message)
 # pdb.set_trace()
 
+# app.main.sample_function("20231014185300")
+# the game is too fast could we slow it down, the game over should not be a pop up but displayed over the canvas, make the background of the the game light blue
 
-# The game is upside down, there is no restart button, the score should show on the game screen
-
-# the pipes should be at the bottom of the screen, the pipes should disappear if you restart the game, center the game on the screen
 # startup_company(ASK)
