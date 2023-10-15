@@ -18,7 +18,7 @@ def create():
 
 
 @appz.route('/new', methods=['GET'])
-def create():
+def new():
     if request.method == 'GET':
         return render_template('home.html')
 
