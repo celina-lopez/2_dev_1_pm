@@ -27,7 +27,7 @@ def new():
 def update(sha_id):
     if request.method == 'PUT':
         data = request.form['feedback']
-        sha = feed_back(data['feedback'], sha_id)
+        sha = feed_back(data, sha_id)
         return {'sha': sha}
     elif request.method == 'GET':
         return send_from_directory('examples/games/{}'.format(sha_id), 'home.html')
