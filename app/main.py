@@ -25,8 +25,10 @@ def startup_company(ask):
         "pm_message": pm_message,
         "html_message": html_message,
         "feed_back": [],
+        "prevous_sha": None,
     }]
-    save_files(html_code, history)
+    sha = save_files(html_code, history)
+    return sha
 
 
 def sample_function(sha):
@@ -52,10 +54,11 @@ def feed_back(feedback, sha):
         "pm_message": feedback_message,
         "html_message": feedback_html_code,
         "feedback": feedback_message,
+        "prevous_sha": sha,
     }
     history.append(new_history)
-    save_files(new_html_code, history)
-    print(feedback_message)
+    sha = save_files(new_html_code, history)
+    return sha
 # pdb.set_trace()
 
 # app.main.sample_function("20231014185300")

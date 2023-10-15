@@ -14,6 +14,7 @@ def save_files(html_code, history):
     os.mkdir(path)
     write_to_directory(path, html_code, 'home.html')
     write_to_directory(path, json.dumps(history), 'history.json')
+    return file_name
 
 
 def write_to_directory(path, content, name):
