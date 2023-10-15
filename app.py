@@ -25,7 +25,7 @@ def new():
 
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
 def update(sha_id):
-    if request.method == 'POST':
+    if request.method == 'PUT':
         data = request.form['feedback']
         sha = feed_back(data['feedback'], sha_id)
         return {'sha': sha}
