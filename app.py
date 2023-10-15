@@ -4,7 +4,7 @@ from app.main import startup_company, feed_back
 appz = Flask(__name__)
 
 
-@appz.route('/', methods=['POST'])
+@appz.route('/', methods=['POST', 'GET'])
 def create():
     if request.method == 'POST':
         ask = request.get_json()['ask']

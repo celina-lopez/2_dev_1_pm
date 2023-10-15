@@ -1,6 +1,6 @@
 import openai
 import os
-from dotenv import load_dotenv
+from python-dotenv import load_dotenv
 import json
 import pdb
 from app.utils import save_files, parse_html

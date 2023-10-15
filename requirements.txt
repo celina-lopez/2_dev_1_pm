@@ -2,4 +2,3 @@ Flask
 openai
 python-dotenv
 bs4
-dotenv
