@@ -6,9 +6,9 @@ import os
 import json
 
 
-def save_files(html_code, history):
+def save_files(html_code, history, project_name=''):
     time_stamp = time.time()
-    file_name = datetime.fromtimestamp(
+    file_name = project_name + "_" + datetime.fromtimestamp(
         time_stamp).strftime('%Y%m%d%H%M%S')
     path = './examples/games/{}'.format(file_name)
     os.mkdir(path)

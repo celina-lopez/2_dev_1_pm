@@ -16,7 +16,7 @@ ASK = 'flappy bird'  # Use for create_project_manager
 # TODO:  write history!
 
 
-def startup_company(ask):
+def startup_company(ask, project_name=''):
     pm_message = create_project_manager(ask)
     html_message = create_game_designer(ask, pm_message)
     html_code = parse_html(html_message)
@@ -27,7 +27,7 @@ def startup_company(ask):
         "feed_back": [],
         "prevous_sha": None,
     }]
-    sha = save_files(html_code, history)
+    sha = save_files(html_code, history, project_name=project_name)
     return sha
 
 

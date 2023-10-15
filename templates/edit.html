@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Game form</title>
+</head>
+
+<body>
+  <h1>Feedback for {{ name }}</h1>
+  <form method="PUT" action="/{{ sha_id }}">
+    <label for="feedback">feedback:</label><br />
+    <textarea type="text" cols="40" rows="5" id="feedback" name="feedback" required></textarea><br />
+    <input type="submit" value="Submit">
+  </form>
+</body>
+
+</html>

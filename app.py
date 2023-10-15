@@ -8,19 +8,28 @@ appz = Flask(__name__)
 @appz.route('/', methods=['POST', 'GET'])
 def create():
     if request.method == 'POST':
-        ask = request.form['ask']
-        sha = startup_company(ask)
+        data = request.form
+
+        sha = startup_company(data['ask'], project_name=data['project_name'])
 
         return redirect(url_for('update', sha_id=sha))
     elif request.method == 'GET':
-        available_shas = os.listdir('examples/games')
-        return render_template('list.html', shas=available_shas)
+        available_shas = [f for f in os.listdir(
+            'examples/games/') if not f.startswith('.')]
+        project_names = [sha.split('_')[0] for sha in available_shas]
+        return render_template('index.html', shas=available_shas, project_names=project_names)
 
 
 @appz.route('/new', methods=['GET'])
 def new():
     if request.method == 'GET':
-        return render_template('home.html')
+        return render_template('new.html')
+
+
+@appz.route('/<sha_id>/edit', methods=['GET'])
+def edit(sha_id):
+    if request.method == 'GET':
+        return render_template('edit.html', sha_id=sha_id)
 
 
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
@@ -28,7 +37,7 @@ def update(sha_id):
     if request.method == 'PUT':
         data = request.form['feedback']
         sha = feed_back(data, sha_id)
-        return {'sha': sha}
+        return redirect(url_for('update', sha_id=sha))
     elif request.method == 'GET':
         return send_from_directory('examples/games/{}'.format(sha_id), 'home.html')
 
