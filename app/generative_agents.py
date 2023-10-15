@@ -26,43 +26,25 @@ def create_project_manager(ask):
     return response.choices[0].message.content
 
 
-def create_javascript_designer(ask, pm_message, html_code):
+def create_game_reviewer(html_code):
     messages = [
         {
             "role": "system",
-            "content": "Your goal is to design a simple game in javascript. ONLY give back javascript code."
+            "content": "Your goal is to review a game that was built in html and javascript. You will need to provide the corrected HTML code back."
         },
         {
             "role": "user",
-            "content": """I will need you to build {}.
-            Here is how it should work: {}.
-            Here is the current HTML code that you will be working with: {}""".format(ask, pm_message, html_code)
+            "content": """ 
+            Could you review the game and rewrite the code in a way that is more efficient? If you can't, return the HTML code.
+            Here is the code: {}.
+            """.format(html_code)
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
     return response.choices[0].message.content
 
 
-def create_html_designer(ask, pm_message):
-    messages = [
-        {
-            "role": "system",
-            "content": "Your goal is to build the frontend ui for this game. ONLY give back HTML and CSS code."
-        },
-        {
-            "role": "user",
-            "content": """ I will need you to build a gaming UI for {}.
-            You will need to build a simple UI that will allow the user to play the game.
-            the javascript file should be imported into the html file as './script.js'.
-            Here are the Project Managers notes about the game: {}.
-            """.format(ask, pm_message)
-        },
-    ]
-    response = openai.ChatCompletion.create(model=MODEL, messages=messages)
-    return response.choices[0].message.content
-
-
-def x____create_game_designer(ask, pm_message):
+def create_game_designer(ask, pm_message):
     messages = [
         {
             "role": "system",
@@ -77,8 +59,4 @@ def x____create_game_designer(ask, pm_message):
         },
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
-    messages.append({
-        "role": "assistant",
-        "content": response.choices[0].message.content,
-    })
-    return messages
+    return response.choices[0].message.content
