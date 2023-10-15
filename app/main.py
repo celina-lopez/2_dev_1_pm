@@ -1,9 +1,10 @@
 import openai
 import os
 from dotenv import load_dotenv
-# import pdb
-from utils import save_files, parse_html
-from generative_agents import create_game_designer, create_project_manager, create_game_reviewer
+import json
+import pdb
+from app.utils import save_files, parse_html
+from app.generative_agents import create_game_designer, create_project_manager, feed_back_pm, feed_back_eng
 
 load_dotenv(dotenv_path='../.env')
 
@@ -19,17 +20,45 @@ def startup_company(ask):
     pm_message = create_project_manager(ask)
     html_message = create_game_designer(ask, pm_message)
     html_code = parse_html(html_message)
-    game_review_message = create_game_reviewer(html_code)
-    final_html_code = parse_html(game_review_message)
-    history = {
+    history = [{
         'ask': ask,
         "pm_message": pm_message,
         "html_message": html_message,
-        "game_review_message": game_review_message
-    }
-    save_files(final_html_code, html_code, history)
+        "feed_back": [],
+    }]
+    save_files(html_code, history)
 
+
+def sample_function(sha):
+    user_input = input("Enter a list of values separated by commas: ")
+    user_list = user_input.split(',')
+    user_list = [item.strip() for item in user_list]
+    feed_back(user_list, sha)
+
+
+def feed_back(feedback, sha):
+    with open('./examples/games/{}/history.json'.format(sha)) as json_file:
+        history = json.load(json_file)
+    ask = history[-1]['ask']
+    with open('./examples/games/{}/home.html'.format(sha), 'r') as outfile:
+        html_code = outfile.read()
+    feedback_message = feed_back_pm(
+        "\n".join(feedback), ask)  # feed back is a list
+    feedback_html_code = feed_back_eng(feedback_message, html_code)
+    new_html_code = parse_html(feedback_html_code)
+    new_history = {
+        'ask': ask,
+        "pm_message": feedback_message,
+        "html_message": feedback_html_code,
+        "feedback": feedback_message,
+    }
+    history.append(new_history)
+    save_files(new_html_code, history)
+    print(feedback_message)
 # pdb.set_trace()
 
 
-startup_company(ASK)
+# The game is upside down, there is no restart button, the score should show on the game screen
+
+# the pipes should be at the bottom of the screen, the pipes should disappear if you restart the game, center the game on the screen
+# startup_company(ASK)

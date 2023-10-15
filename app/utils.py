@@ -6,14 +6,13 @@ import os
 import json
 
 
-def save_files(final_html_code, html_code, history):
+def save_files(html_code, history):
     time_stamp = time.time()
     file_name = datetime.fromtimestamp(
         time_stamp).strftime('%Y%m%d%H%M%S')
     path = './examples/games/{}'.format(file_name)
     os.mkdir(path)
     write_to_directory(path, html_code, 'home.html')
-    write_to_directory(path, final_html_code, 'final_home.html')
     write_to_directory(path, json.dumps(history), 'history.json')
 
 

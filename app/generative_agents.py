@@ -26,24 +26,6 @@ def create_project_manager(ask):
     return response.choices[0].message.content
 
 
-def create_game_reviewer(html_code):
-    messages = [
-        {
-            "role": "system",
-            "content": "Your goal is to review a game that was built in html and javascript. You will need to provide the corrected HTML code back."
-        },
-        {
-            "role": "user",
-            "content": """ 
-            Could you review the game and rewrite the code in a way that is more efficient? If you can't, return the HTML code.
-            Here is the code: {}.
-            """.format(html_code)
-        },
-    ]
-    response = openai.ChatCompletion.create(model=MODEL, messages=messages)
-    return response.choices[0].message.content
-
-
 def create_game_designer(ask, pm_message):
     messages = [
         {
@@ -60,3 +42,42 @@ def create_game_designer(ask, pm_message):
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
     return response.choices[0].message.content
+
+
+def feed_back_pm(feedback, ask):
+    messages = [
+        {
+            "role": "system",
+            "content": """
+   You are a project manager at a gaming startup company. The CEO has asked you to build a game called {}.
+   The game is broken and you need to give feedback to the game designer.
+
+      """.format(ask)
+        },
+        {
+            "role": "user",
+            "content": "I have a list of bugs that need to be fixed. Could you go back to your game engineer and say what needs to be done? Here are the bugs: {}".format(feedback)
+        },
+    ]
+    response = openai.ChatCompletion.create(model=MODEL, messages=messages)
+    return response.choices[0].message.content
+
+
+def feed_back_eng(html_code, pm_feedback):
+    messages = [
+        {
+            "role": "system",
+            "content": """
+        You need to correct the game designer's mistakes. The Project Manager will give you feedback.
+        Here is the game: {}.
+      Give back only the HTML with all the code within including javascript and css.
+      """.format(html_code)
+        },
+        {
+            "role": "user",
+            "content": "Here is some feedback on the current game: {}. Rewrite the HTML code".format(pm_feedback)
+        },
+    ]
+    response = openai.ChatCompletion.create(model=MODEL, messages=messages)
+    return response.choices[0].message.content
+# pdb.set_trace()
