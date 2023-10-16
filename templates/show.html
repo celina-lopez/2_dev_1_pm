@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>
+      Game Show Page
+    </title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+      }
+
+      h1 {
+        text-align: center;
+        color: #333;
+      }
+
+      .thumbnail {
+        display: flex;
+        justify-content: center;
+        margin-top: 50px;
+      }
+
+      .game-image {
+        width: 300px;
+        height: auto;
+      }
+
+      .buttons {
+        display: flex;
+        justify-content: center;
+        margin: 20px;
+      }
+
+      .button {
+        background-color: #333;
+        color: #fff;
+        font-size: 16px;
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        margin: 0 10px;
+        transition: background-color 0.3s;
+      }
+
+      .button:hover {
+        background-color: #555;
+      }
+
+      #update-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+      }
+
+      .update {
+        margin-bottom: 20px;
+        line-height: 1.5;
+      }
+
+      .timestamp {
+        color: #999;
+      }
+    </style>
+    <style type="text/css">
+      @font-face {
+        font-weight: 400;
+        font-style: normal;
+        font-family: circular;
+
+        src: url('chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/fonts/CircularXXWeb-Book.woff2') format('woff2');
+      }
+
+      @font-face {
+        font-weight: 700;
+        font-style: normal;
+        font-family: circular;
+
+        src: url('chrome-extension://liecbddmkiiihnedobmlmillhodjkdmb/fonts/CircularXXWeb-Bold.woff2') format('woff2');
+      }
+    </style>
+    <script type="text/javascript" src="https://rawgit.com/showdownjs/showdown/develop/dist/showdown.min.js"></script>
+  </head>
+
+  <body>
+    <h1>
+      {{ project_name }} 
+    </h1>
+    <div class="thumbnail">
+      <!-- iframe -->
+      <!-- <img alt="Game Thumbnail" class="game-image" src="game_thumbnail.jpg"> -->
+    </div>
+    <div class="buttons">
+      <a class="button" href="/{{ sha_id }}/play">
+        Start Game
+      </a>
+      <a class="button" href="/{{ sha_id }}/edit">
+        Give Feedback 
+      </a>
+    </div>
+    <div id="update-container">
+      <div id="updates">
+        <!-- Updates from the game will be dynamically added here -->
+        {% for history in histories %}
+          <div class="update">
+            <div class="timestamp">
+              Game Description
+            </div>
+            <div>
+              {{ history['ask'] }}
+            </div>
+          </div>
+          <div class="update">
+            <div class="timestamp">
+              Project Manager:
+            </div>
+            <div class="markdown-description">
+              {{ history['pm_message'] }}
+            </div>
+          </div>
+          <div class="update">
+            <div class="timestamp">
+              Engineer: 
+            </div>
+            <div class="markdown-description">
+              {{ history['html_message'] }}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+    <script>
+      var converter = new showdown.Converter();
+      var markdownDescriptions = document.getElementsByClassName('markdown-description');
+      for (var i = 0; i < markdownDescriptions.length; i++) {
+        var description = markdownDescriptions[i];
+        description.innerHTML = converter.makeHtml('"' + description.innerHTML + '"');
+      }
+    </script>
+  </body>
+</html>

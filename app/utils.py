@@ -17,6 +17,12 @@ def save_files(html_code, history, project_name=''):
     return file_name
 
 
+def read_history_json(sha):
+    with open('./examples/games/{}/history.json'.format(sha)) as json_file:
+        history = json.load(json_file)
+    return history
+
+
 def write_to_directory(path, content, name):
     with open("{}/{}".format(path, name), "w") as output_file:
         output_file.write(content)

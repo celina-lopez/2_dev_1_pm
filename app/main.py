@@ -24,7 +24,6 @@ def startup_company(ask, project_name=''):
         'ask': ask,
         "pm_message": pm_message,
         "html_message": html_message,
-        "feed_back": [],
         "prevous_sha": None,
     }]
     sha = save_files(html_code, history, project_name=project_name)
@@ -50,10 +49,9 @@ def feed_back(feedback, sha):
         feedback_message, history[0]['pm_message'], html_code)
     new_html_code = parse_html(feedback_html_code)
     new_history = {
-        'ask': ask,
+        'ask': ",".join(feedback_message),
         "pm_message": feedback_message,
         "html_message": feedback_html_code,
-        "feedback": feedback_message,
         "prevous_sha": sha,
     }
     history.append(new_history)

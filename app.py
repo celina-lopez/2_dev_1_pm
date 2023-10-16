@@ -1,12 +1,13 @@
 from flask import Flask, request, send_from_directory, render_template, redirect, url_for
 from app.main import startup_company, feed_back
 import os
+from app.utils import read_history_json
 
 appz = Flask(__name__)
 
 
 @appz.route('/', methods=['POST', 'GET'])
-def create():
+def index_create():
     if request.method == 'POST':
         data = request.get_json()
 
@@ -32,14 +33,22 @@ def edit(sha_id):
         return render_template('edit.html', sha_id=sha_id)
 
 
+@appz.route('/<sha_id>/play', methods=['GET'])
+def play(sha_id):
+    if request.method == 'GET':
+        return send_from_directory('examples/games/{}'.format(sha_id), 'home.html')
+
+
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
-def update(sha_id):
+def show_update(sha_id):
     if request.method == 'PUT':
         data = request.form['feedback']
         sha = feed_back(data, sha_id)
         return redirect(url_for('update', sha_id=sha))
     elif request.method == 'GET':
-        return send_from_directory('examples/games/{}'.format(sha_id), 'home.html')
+        project_name = sha_id.split('_')[0]
+        histories = read_history_json(sha_id)
+        return render_template('show.html', sha_id=sha_id, project_name=project_name, histories=histories)
 
 
 if __name__ == '__main__':
