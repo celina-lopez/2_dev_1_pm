@@ -143,6 +143,7 @@
       <h2>
         Create Your Own Game
       </h2>
+      <div id="create-game-success" style="color: green;display:  none;">Success! Check the homepage in a minute</div>
       <input id="game-name-input" name="project_name" placeholder="Enter Game Name (does not effect game)" type="text">
       <textarea id="game-description-input" name="ask" placeholder="Describe Game" type="text"></textarea>  
       <button id="save-game-btn">
@@ -178,6 +179,7 @@
     // Function to handle the creation of a new game
     function handleCreateGame() {
       const createGameModal = document.getElementById('create-game-modal');
+      const successText = document.getElementById('create-game-success');
       const saveGameBtn = document.getElementById('save-game-btn');
       const cancelGameBtns = document.getElementsByClassName('cancel-btn');
 
@@ -200,7 +202,7 @@
             project_name: gameName,
             ask: gameDesc
           };
-
+          successText.style.display = 'block'; 
           fetch('/', {
             method: 'POST',
             headers: {
