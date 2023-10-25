@@ -4,16 +4,17 @@ from bs4 import BeautifulSoup
 import re
 import os
 import json
+import uuid
+from models.base import ProjectModel
 
 
 def save_project(html_code, history, project_name=''):
-    time_stamp = time.time()
-    file_name = project_name + "_" + datetime.fromtimestamp(
-        time_stamp).strftime('%Y%m%d%H%M%S')
-
-    write_to_directory(path, html_code, 'home.html')
-    write_to_directory(path, json.dumps(history), 'history.json')
-    return file_name
+    ProjectModel.create(
+        uuid=str(uuid.uuid4()),
+        title=project_name,
+        logs=history,
+        code=html_code
+    )
 
 
 def save_files(html_code, history, project_name=''):
