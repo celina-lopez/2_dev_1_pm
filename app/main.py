@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 import pdb
-from app.utils import save_files, parse_html
+from app.utils import save_project, parse_html
 from app.generative_agents import create_game_designer, create_project_manager, feed_back_pm, feed_back_eng
 
 load_dotenv(dotenv_path='../.env')
@@ -26,7 +26,7 @@ def startup_company(ask, project_name=''):
         "html_message": html_message,
         "prevous_sha": None,
     }]
-    sha = save_files(html_code, history, project_name=project_name)
+    sha = save_project(html_code, history, project_name)
     return sha
 
 

@@ -8,24 +8,15 @@ import uuid
 from models.base import ProjectModel
 
 
-def save_project(html_code, history, project_name=''):
+def save_project(html_code, history, project_name):
+    uuid = str(uuid.uuid4())
     ProjectModel.create(
-        uuid=str(uuid.uuid4()),
+        uuid=uuid,
         title=project_name,
         logs=history,
         code=html_code
     )
-
-
-def save_files(html_code, history, project_name=''):
-    time_stamp = time.time()
-    file_name = project_name + "_" + datetime.fromtimestamp(
-        time_stamp).strftime('%Y%m%d%H%M%S')
-    path = './examples/games/{}'.format(file_name)
-    os.mkdir(path)
-    write_to_directory(path, html_code, 'home.html')
-    write_to_directory(path, json.dumps(history), 'history.json')
-    return file_name
+    return uuid
 
 
 def read_history_json(sha):
