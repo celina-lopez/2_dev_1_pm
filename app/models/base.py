@@ -11,7 +11,7 @@ class ProjectModel(Model):
     """
     A DynamoDB DevProject
     """
-    class Meta(Credentials):
+    class Meta():
         table_name = '2_dev_1_pm-project'
         region = REGION
         aws_access_key_id = os.getenv('AWS_ACCESS_KEY')
@@ -19,7 +19,7 @@ class ProjectModel(Model):
     uuid = UnicodeAttribute(hash_key=True)
     title = UnicodeAttribute()
     logs = ListAttribute()
-    code = UnicodeAttribute()
+    html = UnicodeAttribute()
 
 
 # # Create a new user

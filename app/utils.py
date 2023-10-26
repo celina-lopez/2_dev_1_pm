@@ -1,33 +1,23 @@
-import time
-from datetime import datetime
 from bs4 import BeautifulSoup
 import re
-import os
-import json
 import uuid
-from models.base import ProjectModel
+from app.models.base import ProjectModel
 
 
 def save_project(html_code, history, project_name):
-    uuid = str(uuid.uuid4())
-    ProjectModel.create(
-        uuid=uuid,
+    uid = str(uuid.uuid4())
+    ProjectModel(
+        uid,
         title=project_name,
         logs=history,
-        code=html_code
-    )
-    return uuid
+        html=html_code
+    ).save()
+    return uid
 
 
 def read_history_json(sha):
-    with open('./examples/games/{}/history.json'.format(sha)) as json_file:
-        history = json.load(json_file)
-    return history
-
-
-def write_to_directory(path, content, name):
-    with open("{}/{}".format(path, name), "w") as output_file:
-        output_file.write(content)
+    project = ProjectModel.get(sha)
+    return project.logs
 
 
 def parse_javascript(content):

@@ -13,7 +13,7 @@ def index_create():
 
         sha = startup_company(data['ask'], project_name=data['project_name'])
 
-        return redirect(url_for('update', sha_id=sha))
+        return redirect(url_for('show_update', sha_id=sha))
     elif request.method == 'GET':
         available_shas = [f for f in os.listdir(
             'examples/games/') if not f.startswith('.')]
