@@ -1,7 +1,7 @@
-from flask import Flask, request, send_from_directory, render_template, redirect, url_for
+from flask import Flask, request, render_template, redirect, url_for, render_template_string
 from app.main import startup_company, feed_back
 import os
-from app.utils import read_history_json
+from app.utils import find_project
 
 appz = Flask(__name__)
 
@@ -36,7 +36,8 @@ def edit(sha_id):
 @appz.route('/<sha_id>/play', methods=['GET'])
 def play(sha_id):
     if request.method == 'GET':
-        return send_from_directory('examples/games/{}'.format(sha_id), 'home.html')
+        project = find_project(sha_id)
+        return render_template_string(project.html)
 
 
 @appz.route('/<sha_id>', methods=['PUT', 'GET'])
@@ -46,9 +47,8 @@ def show_update(sha_id):
         sha = feed_back(data, sha_id)
         return redirect(url_for('update', sha_id=sha))
     elif request.method == 'GET':
-        project_name = sha_id.split('_')[0]
-        histories = read_history_json(sha_id)
-        return render_template('show.html', sha_id=sha_id, project_name=project_name, histories=histories)
+        project = find_project(sha_id)
+        return render_template('show.html', project)
 
 
 if __name__ == '__main__':

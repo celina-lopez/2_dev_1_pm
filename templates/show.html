@@ -86,24 +86,24 @@
 
   <body>
     <h1>
-      {{ project_name }} 
+      {{ project.title }} 
     </h1>
     <div class="thumbnail">
       <!-- iframe -->
-      <!-- <img alt="Game Thumbnail" class="game-image" src="game_thumbnail.jpg"> -->
+      <img alt="Game Thumbnail" class="game-image" src="{{ project.image }}">
     </div>
     <div class="buttons">
-      <a class="button" href="/{{ sha_id }}/play">
+      <a class="button" href="/{{ project.uuid }}/play">
         Start Game
       </a>
-      <a class="button" href="/{{ sha_id }}/edit">
+      <a class="button" href="/{{ project.uuid }}/edit">
         Give Feedback 
       </a>
     </div>
     <div id="update-container">
       <div id="updates">
         <!-- Updates from the game will be dynamically added here -->
-        {% for history in histories %}
+        {% for history in project.logs %}
           <div class="update">
             <div class="timestamp">
               Game Description

@@ -15,9 +15,9 @@ def save_project(html_code, history, project_name):
     return uid
 
 
-def read_history_json(sha):
-    project = ProjectModel.get(sha)
-    return project.logs
+def find_project(sha):
+    for project in ProjectModel.query(sha):
+        return project
 
 
 def parse_javascript(content):
