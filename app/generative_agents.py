@@ -82,4 +82,31 @@ def feed_back_eng(html_code, project_description, pm_feedback):
     ]
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
     return response.choices[0].message.content
-# pdb.set_trace()
+
+
+def create_designer(ask):
+    messages = [
+        {
+            "role": "system",
+            "content": """You are a designer at a gaming startup company.
+      Your goal is to design the cover art for this new game: {}.
+      You inputting a Dalle-3 Image Generation prompt that will generate the cover art for the game.
+    ONLY GIVE THE DALLE-3 PROMPT.
+      """.format(ask)
+        },
+        {
+            "role": "user",
+            "content": "Give back the Dalle-3 prompt for the cover art for the game. ONLY GIVE THE DALLE-3 PROMPT"
+        },
+    ]
+    response = openai.ChatCompletion.create(model=MODEL, messages=messages)
+    return response.choices[0].message.content
+
+
+def dalle_3_designer(pm_message):
+    response = openai.Image.create(
+        prompt=pm_message,
+        n=1,
+        size="512x512"
+    )
+    return response['data'][0]['url']

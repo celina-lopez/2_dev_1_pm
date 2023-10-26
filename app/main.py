@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import json
 import pdb
 from app.utils import save_project, parse_html
-from app.generative_agents import create_game_designer, create_project_manager, feed_back_pm, feed_back_eng
+from app.generative_agents import create_game_designer, create_project_manager, feed_back_pm, feed_back_eng, create_designer, dalle_3_designer
 
 load_dotenv(dotenv_path='../.env')
 
@@ -20,11 +20,13 @@ def startup_company(ask, project_name=''):
     pm_message = create_project_manager(ask)
     html_message = create_game_designer(ask, pm_message)
     html_code = parse_html(html_message)
+    designer_message = create_designer(ask)
+    image_url = dalle_3_designer(designer_message)
     history = [{
         'ask': ask,
         "pm_message": pm_message,
         "html_message": html_message,
-        "prevous_sha": None,
+        'image_url': image_url
     }]
     sha = save_project(html_code, history, project_name)
     return sha
