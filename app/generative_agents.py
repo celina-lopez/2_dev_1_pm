@@ -92,6 +92,7 @@ def create_designer(ask):
       Your goal is to design the cover art for this new game: {}.
       You inputting a Dalle-3 Image Generation prompt that will generate the cover art for the game.
     ONLY GIVE THE DALLE-3 PROMPT.
+    Prompt must be length 1000 or less.
       """.format(ask)
         },
         {

@@ -20,6 +20,7 @@ class ProjectModel(Model):
     title = UnicodeAttribute()
     logs = ListAttribute()
     html = UnicodeAttribute()
+    image = UnicodeAttribute()
 
 
 # # Create a new user

@@ -26,9 +26,8 @@ def startup_company(ask, project_name=''):
         'ask': ask,
         "pm_message": pm_message,
         "html_message": html_message,
-        'image_url': image_url
     }]
-    sha = save_project(html_code, history, project_name)
+    sha = save_project(html_code, history, project_name, image_url)
     return sha
 
 

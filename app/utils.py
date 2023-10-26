@@ -4,13 +4,14 @@ import uuid
 from app.models.base import ProjectModel
 
 
-def save_project(html_code, history, project_name):
+def save_project(html_code, history, project_name, image_url):
     uid = str(uuid.uuid4())
     ProjectModel(
         uid,
         title=project_name,
         logs=history,
-        html=html_code
+        html=html_code,
+        image=image_url
     ).save()
     return uid
 

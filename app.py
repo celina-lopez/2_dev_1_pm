@@ -48,7 +48,7 @@ def show_update(sha_id):
         return redirect(url_for('update', sha_id=sha))
     elif request.method == 'GET':
         project = find_project(sha_id)
-        return render_template('show.html', project)
+        return render_template('show.html', project=project)
 
 
 if __name__ == '__main__':
