@@ -51,12 +51,12 @@ PERSONAS = {
 }
 
 
-def message_to_openai(persona, *args):
+def message_to_openai(persona, args, user_content):
     return [
         {"role": "system",
             "content": PERSONAS[persona]['system'].format(*args)},
         {"role": "user",
-            "content": PERSONAS[persona]['user']},
+            "content": user_content or PERSONAS[persona]['user']},
     ]
 
 
@@ -65,22 +65,8 @@ def openai_content(messages):
     return response.choices[0].message.content
 
 
-def create_persona(role, *args):
-    messages = message_to_openai(role, *args)
-    return openai_content(messages)
-
-
-def feed_back_eng(html_code, project_description, pm_feedback):
-    messages = [
-        {
-            "role": "system",
-            "content": PERSONAS['feedback_eng']['system'].format(html_code, project_description)
-        },
-        {
-            "role": "user",
-            "content": pm_feedback
-        },
-    ]
+def create_persona(role, args, user_content=None):
+    messages = message_to_openai(role, args, user_content)
     return openai_content(messages)
 
 

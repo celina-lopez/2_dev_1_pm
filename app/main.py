@@ -13,7 +13,7 @@ MODEL = 'gpt-3.5-turbo'
 
 def startup_company(ask, project_name=''):
     pm_message = create_persona('project_manager', ask)
-    html_message = create_persona('game_designer', ask, pm_message)
+    html_message = create_persona('game_designer', (ask, pm_message))
     html = parse_html(html_message)
     designer_message = create_persona('game_designer', ask)
     image_url = dalle_3_designer(designer_message)
@@ -33,8 +33,8 @@ def feed_back(feedback, sha):
     with open('./examples/games/{}/home.html'.format(sha), 'r') as outfile:
         html_code = outfile.read()
     feedback_message = create_persona('feedback_pm', "\n".join(feedback), ask)
-    feedback_html_code = feed_back_eng(
-        feedback_message, history[0]['pm_message'], html_code)
+    feedback_html_code = create_persona(
+        'feedback_eng', (html_code, history[0]['pm_message']), user_content=feedback_message)
     new_html_code = parse_html(feedback_html_code)
     new_history = {
         'ask': ",".join(feedback_message),
