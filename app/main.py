@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 import json
 from app.utils import save_project, parse_html
-from app.generative_agents import create_persona, feed_back_eng, dalle_3_designer
+from app.generative_agents import create_persona, dalle_3_designer
 
 load_dotenv(dotenv_path='../.env')
 
@@ -15,7 +15,7 @@ def startup_company(ask, project_name=''):
     pm_message = create_persona('project_manager', ask)
     html_message = create_persona('game_designer', (ask, pm_message))
     html = parse_html(html_message)
-    designer_message = create_persona('game_designer', ask)
+    designer_message = create_persona('designer', ask)
     image_url = dalle_3_designer(designer_message)
     history = [{
         'ask': ask,

@@ -51,23 +51,15 @@ PERSONAS = {
 }
 
 
-def message_to_openai(persona, args, user_content):
-    return [
+def create_persona(persona, args, user_content=None):
+    messages = [
         {"role": "system",
             "content": PERSONAS[persona]['system'].format(*args)},
         {"role": "user",
             "content": user_content or PERSONAS[persona]['user']},
     ]
-
-
-def openai_content(messages):
     response = openai.ChatCompletion.create(model=MODEL, messages=messages)
     return response.choices[0].message.content
-
-
-def create_persona(role, args, user_content=None):
-    messages = message_to_openai(role, args, user_content)
-    return openai_content(messages)
 
 
 def dalle_3_designer(pm_message):
