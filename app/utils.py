@@ -21,6 +21,14 @@ def find_project(sha):
         return project
 
 
+def update_project(sha, new_html_code, logs):
+    project = find_project(sha)
+    project.html = new_html_code
+    project.logs = logs
+    project.save()
+    return project
+
+
 def parse_javascript(content):
     pattern = r'```javascript(.*?)```'
     javascript_code = re.findall(pattern, content, re.DOTALL)[0]

@@ -1,8 +1,7 @@
 import openai
 import os
 from dotenv import load_dotenv
-import json
-from app.utils import save_project, parse_html
+from app.utils import save_project, parse_html, update_project, find_project
 from app.generative_agents import create_persona, dalle_3_designer
 
 load_dotenv(dotenv_path='../.env')
@@ -21,26 +20,25 @@ def startup_company(ask, project_name=''):
         'ask': ask,
         "pm_message": pm_message,
         "html_message": html_message,
+        'designer_message': designer_message,
+        'image_url': image_url
     }]
     uuid = save_project(html, history, project_name, image_url)
     return uuid
 
 
 def feed_back(feedback, sha):
-    with open('./examples/games/{}/history.json'.format(sha)) as json_file:
-        history = json.load(json_file)
-    ask = history[-1]['ask']
-    with open('./examples/games/{}/home.html'.format(sha), 'r') as outfile:
-        html_code = outfile.read()
-    feedback_message = create_persona('feedback_pm', "\n".join(feedback), ask)
+    project = find_project(sha)
+    logs = project.logs
+    html_code = project.html
+    feedback_message = create_persona('feedback_pm', feedback, logs[0]['ask'])
     feedback_html_code = create_persona(
-        'feedback_eng', (html_code, history[0]['pm_message']), user_content=feedback_message)
+        'feedback_eng', (html_code, logs[-1]['pm_message']), user_content=feedback_message)
     new_html_code = parse_html(feedback_html_code)
     new_history = {
-        'ask': ",".join(feedback_message),
+        'ask': feedback,
         "pm_message": feedback_message,
         "html_message": feedback_html_code,
     }
-    history.append(new_history)
-    sha = save_project(new_html_code, history)  # TODO: update project
-    return sha
+    logs.append(new_history)
+    return update_project(sha, new_html_code, logs)
