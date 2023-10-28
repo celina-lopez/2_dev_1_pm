@@ -1,7 +1,6 @@
 from flask import Flask, request, render_template, redirect, url_for, render_template_string
 from app.main import startup_company, feed_back
-import os
-from app.utils import find_project
+from app.utils import find_project, query_projects
 
 appz = Flask(__name__)
 
@@ -15,10 +14,8 @@ def index_create():
 
         return redirect(url_for('show_update', sha_id=sha))
     elif request.method == 'GET':
-        available_shas = [f for f in os.listdir(
-            'examples/games/') if not f.startswith('.')]
-        project_names = [sha.split('_')[0] for sha in available_shas]
-        return render_template('index.html', shas=available_shas, project_names=project_names)
+        projects = query_projects()
+        return render_template('index.html', projects=projects)
 
 
 @appz.route('/new', methods=['GET'])
@@ -40,9 +37,9 @@ def play(sha_id):
         return render_template_string(project.html)
 
 
-@appz.route('/<sha_id>', methods=['PUT', 'GET'])
+@appz.route('/<sha_id>', methods=['POST', 'GET'])
 def show_update(sha_id):
-    if request.method == 'PUT':
+    if request.method == 'POST':
         data = request.form['feedback']
         sha = feed_back(data, sha_id)
         return redirect(url_for('update', sha_id=sha))

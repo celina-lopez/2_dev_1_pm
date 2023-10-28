@@ -29,6 +29,14 @@ def update_project(sha, new_html_code, logs):
     return project
 
 
+def query_projects(lastKey=None):
+    project_query = ProjectModel.scan(limit=20, last_evaluated_key=lastKey)
+    projects = []
+    for project in project_query:
+        projects.append(project)
+    return projects
+
+
 def parse_javascript(content):
     pattern = r'```javascript(.*?)```'
     javascript_code = re.findall(pattern, content, re.DOTALL)[0]

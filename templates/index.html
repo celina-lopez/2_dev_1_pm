@@ -131,10 +131,11 @@
     Create Game
   </button>
   <div class="game-container">
-    {% for game in project_names %}
+    {% for project in projects %}
     <div class="game-card">
-      <h2>{{ game }}</h2>
-      <a href="/{{ shas[loop.index - 1] }}">Play</a>
+      <img src="{{ project.image }}" />
+      <h2>{{ project.title }}</h2>
+      <a href="/{{ project.uuid }}">Show</a>
     </div>
     {% endfor %}
   </div>

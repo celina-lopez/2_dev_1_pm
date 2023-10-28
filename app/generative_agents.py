@@ -1,10 +1,19 @@
+import boto3
 import openai
 import os
 from dotenv import load_dotenv
+import requests
+import uuid
 
 load_dotenv(dotenv_path='../.env')
 openai.api_key = os.getenv("OPENAI_API_KEY")
+session = boto3.Session(
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_KEY")
+)
+s3 = session.resource('s3')
 MODEL = 'gpt-3.5-turbo'
+BUCKET = os.getenv("IMAGE_BUCKET_NAME")
 PERSONAS = {
     "project_manager": {
         "system": """You are a project manager at a gaming startup company.
@@ -68,4 +77,9 @@ def dalle_3_designer(pm_message):
         n=1,
         size="512x512"
     )
-    return response['data'][0]['url']
+    url = response['data'][0]['url']
+    data = requests.get(url).content
+    uid = str(uuid.uuid4())
+    key = f'{uid}.png'
+    s3.Bucket(BUCKET).put_object(Key=key, Body=data)
+    return f"https://{BUCKET}.s3.amazonaws.com/{key}"
