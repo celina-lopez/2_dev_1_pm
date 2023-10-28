@@ -21,13 +21,3 @@ class ProjectModel(Model):
     logs = ListAttribute()
     html = UnicodeAttribute()
     image = UnicodeAttribute()
-
-
-# # Create a new user
-# user = UserModel("John", "Denver")
-# user.email = "djohn@company.org"
-# user.save()
-
-# # Query for the user
-# for user in UserModel.query("John", UserModel.first_name.startswith("J")):
-#    print(user.first_name)
