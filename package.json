@@ -1,0 +1,25 @@
+{
+  "name": "2_dev_1_pm",
+  "version": "1.0.0",
+  "description": "- [ ] UI is horrible - [ ] feedback - [ ] delete old games or make a database",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/celina-lopez/2_dev_1_pm.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/celina-lopez/2_dev_1_pm/issues"
+  },
+  "homepage": "https://github.com/celina-lopez/2_dev_1_pm#readme",
+  "dependencies": {
+    "tailwindcss": "^3.3.5"
+  }
+}
