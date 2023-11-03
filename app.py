@@ -41,8 +41,8 @@ def play(sha_id):
 def show_update(sha_id):
     if request.method == 'POST':
         data = request.form['feedback']
-        sha = feed_back(data, sha_id)
-        return redirect(url_for('update', sha_id=sha))
+        feed_back(data, sha_id)
+        return redirect(url_for('show_update', sha_id=sha_id))
     elif request.method == 'GET':
         project = find_project(sha_id)
         return render_template('show.html', project=project)

@@ -42,9 +42,9 @@ PERSONAS = {
     },
     'feedback_eng': {
         'system': """
-        You need to correct the game designer's mistakes. I am a Project Manager that is giving you feedback.
-        Here is the HTML code for the game: {}. Here is also the project timeline/description: {}
-        Give back only the HTML with all the code within including javascript and css.
+        I am a Project Manager that is giving you feedback.
+        Here is the HTML code for the game: {}.
+        Give back only the improved HTML with all the code within including javascript and css.
         """,
     },
     'designer': {

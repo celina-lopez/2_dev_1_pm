@@ -33,7 +33,7 @@ def feed_back(feedback, sha):
     html_code = project.html
     feedback_message = create_persona('feedback_pm', feedback, logs[0]['ask'])
     feedback_html_code = create_persona(
-        'feedback_eng', (html_code, logs[-1]['pm_message']), user_content=feedback_message)
+        'feedback_eng', (html_code, logs[0]['pm_message']), user_content=feedback_message)
     new_html_code = parse_html(feedback_html_code)
     new_history = {
         'ask': feedback,
@@ -41,4 +41,4 @@ def feed_back(feedback, sha):
         "html_message": feedback_html_code,
     }
     logs.append(new_history)
-    return update_project(sha, new_html_code, logs)
+    update_project(sha, new_html_code, logs)
